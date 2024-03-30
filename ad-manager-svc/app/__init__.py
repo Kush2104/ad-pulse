@@ -11,4 +11,7 @@ def create_app():
     from app.routes.publisher_routes import publisher_blueprint
     app.register_blueprint(publisher_blueprint)
 
+    from app.routes.campaign_routes import campaign_blueprint
+    app.register_blueprint(campaign_blueprint)
+
     return app
