@@ -6,6 +6,7 @@ import PublisherPage from './components/pages/PublisherPage'; // Import Publishe
 import AdvertiserPage from './components/pages/AdvertiserPage';
 import AdUnitPage from './components/pages/AdUnitPage'; // Import AdUnitPage component
 import CampaignPage from './components/pages/CampaignPage';
+import Reports from './components/pages/Reports';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/demand" element={<AdvertiserPage />} />
             <Route path="/inventory/:PubId" element={<AdUnitPage />} />
             <Route path="/demand/:AdvId" element={<CampaignPage />} />
+            <Route path="/report" element={<Reports />} />
           </Routes>
         </div>
       </div>
