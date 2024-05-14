@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.adpulse.ad_manager_frontend.name }}
+  namespace: {{ .Values.adpulse.namespace.name }}
+  labels:
+    {{ .Values.adpulse.ad_manager_frontend.labels | toYaml | nindent 4}}
+spec:
+  replicas: {{ .Values.adpulse.ad_manager_frontend.replicaCount }}
+  selector:
+    matchLabels:
+      {{ .Values.adpulse.ad_manager_frontend.selectorLabels | toYaml | nindent 6}}
+  template:
+    metadata:
+      labels:
+        {{ .Values.adpulse.ad_manager_frontend.selectorLabels | toYaml | nindent 8}}
+    spec:
+      serviceAccountName: {{ .Values.adpulse.ad_manager_frontend.serviceAccountName }}
+      containers:
+        - name: {{ .Values.adpulse.ad_manager_frontend.name }}
+          image: "{{ .Values.adpulse.ad_manager_frontend.image.repository }}:{{ .Values.adpulse.ad_manager_frontend.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            requests:
+              memory: 4Gi
+              cpu: 3000m
+            limits:
+              memory: 6Gi
+              cpu: 4000m
+          env:
+            - name: REACT_APP_API_BASE_URL
+              value: {{ .Values.ad_manager_url }}
+            - name: REACT_APP_API_AD_SERVER_URL
+              value: {{ .Values.ad_server_url }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.adpulse.ad_manager_frontend.service.targetPort }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health
+          #     port: http
